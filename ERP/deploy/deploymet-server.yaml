@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: erp-server-deployment
+  namespace: erp
+  labels:
+    app: server-erp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-erp
+  template:
+    metadata:
+      labels:
+        app: server-erp
+    spec:
+      containers:
+      - name: server-erp
+        image: avishaymp/erp-back:0.0.0
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: secret-erp

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banners-client-deployment
+  namespace: banner
+  labels:
+    app: client-banner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-banner
+  template:
+    metadata:
+      labels:
+        app: client-banner
+    spec:
+      containers:
+      - name: client-banner
+        image: avishaymp/banner-front:0.0.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-banner-conf
+          mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-banner-conf
+          configMap:
+            name: nginx-banner-conf

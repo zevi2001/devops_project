@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-server-deployment
+  namespace: store
+  labels:
+    app: server-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-store
+  template:
+    metadata:
+      labels:
+        app: server-store
+    spec:
+      containers:
+      - name: server-store
+        image: avishaymp/store-back:0.0.4
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: secret-store

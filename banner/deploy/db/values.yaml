@@ -1,0 +1,92 @@
+architecture: replicaset
+auth:
+  enabled: true
+  rootUser: simha
+  rootPassword: "stern"
+replicaCount: 1
+persistence:
+  size: 100M
+arbiter:
+  enabled: false
+
+initdbScripts:
+  init-script.js: |
+    try {
+      db.banners.deleteMany({}) 
+      res = db.banners.insertMany([
+        {
+          "_id": {
+            "$oid": "655f18b37a9f0d7057d09858"
+          },
+          "id": 3,
+          "image": {
+            "url": "http://res.cloudinary.com/dm7dutcrn/image/upload/v1701009734/o4bc19dl8jly4rmijudp.webp",
+            "alt": "Samsung Universe 9"
+          },
+          "text": "Discover the Samsung Universe 9, transcending the Galaxy series. A new variant that takes you beyond, priced at $1249.",
+          "author": "Chavi da",
+          "category": "smartphones",
+          "rating": 6,
+          "sale": 36,
+          "createdAt": {
+            "$date": "2023-11-22T10:10:28.860Z"
+          },
+          "productID": 3
+        },
+        {
+          "_id": {
+            "$oid": "655f18b37a9f0d7057d0985a"
+          },
+          "id": 5,
+          "image": {
+            "url": "http://res.cloudinary.com/dm7dutcrn/image/upload/v1701009868/pedrtifadra8vykvamgq.webp",
+            "alt": "Huawei P30"
+          },
+          "text": "Huawei P30, the re-badged new edition, unveiled in Germany and now available in the UK. Yours for $499.",
+          "author": "Chavi da",
+          "category": "smartphones",
+          "rating": 4,
+          "sale": 32,
+          "createdAt": {
+            "$date": "2023-11-22T10:10:28.860Z"
+          },
+          "productID": 5
+        },
+        {
+          "_id": {
+            "$oid": "655f325c7a9f0d7057d0985c"
+          },
+          "id": 11,
+          "image": {
+            "url": "http://res.cloudinary.com/dm7dutcrn/image/upload/v1701081594/hxxpdhxpmkweq8nh3ofj.webp",
+            "alt": "Perfume Oil"
+          },
+          "text": "Immerse yourself in the exquisite fragrance of Acqua Di Gio by Giorgio Armani. Our concentrated perfume oil, now at a mega discount, brings a touch of luxury to every moment.",
+          "createdAt": {
+            "$date": "2023-11-22T10:10:28.860Z"
+          },
+          "author": "Chavi da",
+          "category": "fragrances",
+          "rating": 6,
+          "sale": 60,
+          "productID": 11
+        }
+      ]);
+      
+      console.log('Database seeded successfully.');
+      console.log(db.getSiblingDB("admin").banners.countDocuments());
+
+      const collections = db.getCollectionNames();
+      console.log('Collections created:', collections);
+    } catch (error) {
+      console.error(error)
+    }
+
+
+
+
+
+
+
+
+

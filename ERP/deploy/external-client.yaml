@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: erp-client-service-external
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: erp-client-service.erp.svc.cluster.local
+  ports:
+    - port: 80

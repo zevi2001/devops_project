@@ -1,0 +1,3 @@
+.MuiButton-contained:focus {
+  outline: 2px solid transparent; /* Change the outline color here */
+}

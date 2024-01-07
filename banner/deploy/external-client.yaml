@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: banner-client-service-external
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: banner-client-service.banner.svc.cluster.local
+  ports:
+    - port: 80

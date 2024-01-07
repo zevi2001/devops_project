@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: erp-client-deployment
+  namespace: erp
+  labels:
+    app: client-erp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-erp
+  template:
+    metadata:
+      labels:
+        app: client-erp
+    spec:
+      containers:
+      - name: client-erp
+        image: avishaymp/erp-front:0.0.0
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-erp-conf
+          mountPath: /etc/nginx/conf.d
+        # envFrom:
+        # - secretRef:
+        #     name: secret-erp
+      volumes:
+        - name: nginx-erp-conf
+          configMap:
+            name: nginx-erp-conf

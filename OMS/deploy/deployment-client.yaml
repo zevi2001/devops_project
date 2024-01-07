@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oms-client-deployment
+  namespace: oms
+  labels:
+    app: client-oms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-oms
+  template:
+    metadata:
+      labels:
+        app: client-oms
+    spec:
+      containers:
+      - name: client-oms
+        image: avishaymp/oms-front:0.0.1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-oms-conf
+          mountPath: /etc/nginx/conf.d
+        # envFrom:
+        # - secretRef:
+        #     name: secret-oms
+      volumes:
+        - name: nginx-oms-conf
+          configMap:
+            name: nginx-oms-conf

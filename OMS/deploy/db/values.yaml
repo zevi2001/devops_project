@@ -1,0 +1,113 @@
+architecture: replicaset
+auth:
+  enabled: true
+  rootUser: simha
+  rootPassword: "stern"
+replicaCount: 1
+persistence:
+  size: 100M
+arbiter:
+  enabled: false
+
+initdbScripts:
+  init-script.js: |
+    try {
+      db = db.getSiblingDB("admin");
+
+      const uData = [
+        {
+        userName: "mendiLerner",
+        email: "mendiLerner@gmail.com",
+        password: "$2a$10$Ij0lyPb4y2e6Ly7whXt6Qe9AEOaoOa7FQ5FyNQbNObNKzSIf1S0hu",
+        isAdmin: true
+        }        
+      ];
+
+      const oData = [
+        {
+          "cartItems": [
+            {
+              "name": "Product 1",
+              "description": "Description for Product 1",
+              "price": 10.99,
+              "quantity": 2
+            },
+            {
+              "name": "Product 2",
+              "description": "Description for Product 2",
+              "price": 15.49,
+              "quantity": 1
+            }
+          ],
+          "orderTime": "2023-11-20T09:30:34.245Z",
+          "status": "cancelled",
+          "price": 26.47,
+          "shippingDetails": {
+            "address": "123 Main St",
+            "contactNumber": "555-123-4567",
+            "orderType": "regular"
+          },
+          "userId": "1"
+        },
+        {
+          "cartItems": [
+            {
+              "name": "Laptop",
+              "description": "High-performance laptop",
+              "price": 1200,
+              "quantity": 1
+            },
+            {
+              "name": "Mouse",
+              "description": "Wireless ergonomic mouse",
+              "price": 35.99,
+              "quantity": 2
+            }
+          ],
+          "orderTime": "2023-08-15T08:45:00.000Z",
+          "status": "cancelled",
+          "price": 1271.98,
+          "shippingDetails": {
+            "address": "456 Elm St",
+            "contactNumber": "555-987-6543",
+            "orderType": "express"
+          },
+          "userId": "1"
+        },
+        {
+          "cartItems": [
+            {
+              "name": "Headphones",
+              "description": "Noise-canceling headphones",
+              "price": 99.99,
+              "quantity": 1
+            }
+          ],
+          "orderTime": "2023-11-23T14:20:00.000Z",
+          "status": "cancelled",
+          "price": 99.99,
+          "shippingDetails": {
+            "address": "789 Oak Ln",
+            "contactNumber": "555-123-4567",
+            "orderType": "pickup"
+          },
+          "userId": "1"
+        }
+      ]
+
+      db.users.deleteMany({}); 
+      result1 = db.users.insertMany(uData);
+      db.orders.deleteMany({}); 
+      result2 = db.orders.insertMany(oData);
+
+      console.log('Database seeded successfully.');
+      console.log(db.getSiblingDB("admin").products.countDocuments());
+      console.log(db.getSiblingDB("admin").categories.countDocuments());
+    
+      const collections = db.getCollectionNames();
+      console.log('Collections created:', collections);
+    } catch (error) {
+      console.error(error);
+    }    
+
+
