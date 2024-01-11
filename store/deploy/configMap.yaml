@@ -16,3 +16,6 @@ data:
         try_files $uri $uri/ =404;
       }
     }
+  ERP_SERVER: http://erp-server-service.erp:3000
+  BANNERS_SERVER: http://banner-server-service.banner:3000
+  OMS_SERVER: http://oms-server-service.oms:3000

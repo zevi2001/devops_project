@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-client-deployment
+  labels:
+    app: client-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-store
+  template:
+    metadata:
+      labels:
+        app: client-store
+    spec:
+      containers:
+      - name: client-store
+        image: zevik/store-local-image:0.0.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-client-conf
+          mountPath: /etc/nginx/conf.d
+        # envFrom:
+        # - secretRef:
+        #     name: secret-store
+      volumes:
+        - name: nginx-client-conf
+          configMap:
+            name: nginx-client-conf

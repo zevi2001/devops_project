@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-client-conf
+data:
+  default.conf.template: |
+    server {
+      listen 80;
+      location / {
+        sub_filter_once on;
+        sub_filter "_BASE_STORE_DOMAIN_URL_" "http://{{ .Values.host }}/store/api";
+        root /usr/share/nginx/html;
+        try_files $uri $uri/ /index.html;
+      }
+      location /assets/ {
+        root /usr/share/nginx/html;
+        try_files $uri $uri/ =404;
+      }
+    }
+
+    
+{{- $replicas := int .Values.mongodb.replicaCount }}
+{{- $name := .Values.mongodb.fullnameOverride }}
+{{- $namespace := .Values.namespaceOverride | default .Release.Namespace }}
+{{- $auth := .Values.mongodb.auth }}
+  DB_HOST: |
+      mongodb://{{ $auth.rootUser }}:{{ $auth.rootPassword }}@
+      {{- range $i, $e := until $replicas -}}
+      {{- if $i }},{{ end -}}
+      {{ $name }}-{{ $i }}.{{ $name }}-headless.{{ $namespace }}.svc.cluster.local:27017
+      {{- end }}
+      /admin
+      
+  ERP_SERVER: http://erp-server-service.erp:3000
+  BANNERS_SERVER: http://banner-server-service.banner:3000
+  OMS_SERVER: http://oms-server-service.oms:3000
